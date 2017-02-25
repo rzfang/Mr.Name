@@ -7,6 +7,7 @@ from gi.repository import Gtk
 import os
 import re
 import sys
+import urllib
 
 #==== functions. =======================================================================================================
 
@@ -21,6 +22,8 @@ def Alert (Txt) :
   Dlg.destroy()
 
 def FileList (Btn) :
+  global WkPth
+
   DirPth = Ety_DirPth.get_text() # 'DirPth' = Directory Path.
 
   if not os.path.isdir(DirPth) :
@@ -30,6 +33,11 @@ def FileList (Btn) :
 
   if DirPth[-1] is not '/' :
     DirPth += '/';
+
+  if WkPth is not DirPth :
+    WkPth = DirPth
+
+    print WkPth
 
   FlNmLst = os.listdir(DirPth) # 'FlNmLst' = File Name List.
 
@@ -176,7 +184,7 @@ Ety_DirPth = Bdr.get_object('Ety_DirPth')
 WkPth = '' # 'WkPth' = Working Path
 
 if len(sys.argv) > 1 :
-  WkPth = os.path.abspath(sys.argv[1])
+  WkPth = os.path.abspath(urllib.unquote(sys.argv[1]).replace('file://', ''))
 
   if WkPth[-1] and WkPth[-1] is not '/' :
     WkPth +='/'
