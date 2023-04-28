@@ -1,0 +1,76 @@
+#:kivy 2.1.0
+
+GridLayout:
+    rows: 3
+    BoxLayout:
+        cols: 3
+        size: (0, 30)
+        size_hint: (1, None)
+        Label:
+            size_hint_x: None
+            size_x: 150
+            text: 'Target Folder'
+        TextInput:
+            id: FolderPath
+            multiline: False
+            size_hint_x: 1
+            text: 'Folder Path'
+        Button:
+            on_press: app.FolderBrowse()
+            size_hint_x: None
+            size_x: 80
+            text: 'Browse'
+    ScrollView:
+        size_hint: (1, 1)
+        GridLayout:
+            cols: 2
+            id: MappingTable
+            size_hint: (1, None)
+            Label:
+                size: (0, 30)
+                size_hint: (1, None)
+                text: 'Origin'
+            Label:
+                size: (0, 30)
+                size_hint: (1, None)
+                text: 'Rename'
+    Label:
+        size: (0, 30)
+        size_hint: (1, None)
+        text: 'bg'
+
+<Alert>
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: root.text
+            size_hint: (1, 1)
+        AnchorLayout:
+            anchor_x: 'right'
+            anchor_y: 'bottom'
+            size: (0, 35)
+            size_hint: (1, None)
+            Button:
+                on_release: root.Cancel()
+                size: (50, 0)
+                size_hint: (None, 1)
+                text: 'OK'
+
+<FolderBrowser>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        FileChooserListView:
+            dirselect: True
+            id: FileChooser
+            path: root.path
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.Cancel()
+            Button:
+                text: "Load"
+                on_release: root.Load(FileChooser.path, FileChooser.selection)
